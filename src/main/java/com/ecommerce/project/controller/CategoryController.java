@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.service.CategoryService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -40,28 +41,25 @@ public class CategoryController {
 
 		@PostMapping("/public/categories")
 //		@RequestMapping(value = "/public/categories", method = RequestMethod.POST)
-		public ResponseEntity<String> createCatgory(@RequestBody Category category) {
+		public ResponseEntity<String> createCatgory(@Valid @RequestBody Category category) {
 			categoryService.createCategory(category);
 			return new ResponseEntity<>("Category added successfully", HttpStatus.CREATED);
 		}
 
 		@DeleteMapping("/admin/categories/{categoryId}")
 		public ResponseEntity<String> deleteCatgory(@PathVariable Long categoryId) {
-			try {
+
 				String status = categoryService.deleteCategory(categoryId);
 				return new ResponseEntity<>(status, HttpStatus.OK);
-			} catch (ResponseStatusException e) {
-				return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-			}
+
 		}
 
 		@PutMapping("/public/categories/{categoryId}")
-		public ResponseEntity<String> updateCatgory(@RequestBody Category category, @PathVariable Long categoryId) {
-			try {
+		public ResponseEntity<String> updateCatgory(@Valid @RequestBody Category category,
+				@PathVariable Long categoryId) {
+
 				categoryService.updateCategory(category, categoryId);
 				return new ResponseEntity<>("Category updated successfully", HttpStatus.OK);
-			} catch (ResponseStatusException e) {
-				return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-			}
+
 		}
 }
