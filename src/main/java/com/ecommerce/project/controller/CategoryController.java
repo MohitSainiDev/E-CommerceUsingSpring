@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.service.CategoryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
@@ -29,7 +31,7 @@ public class CategoryController {
 	}
 
 	@PostMapping("/public/categories")
-	public ResponseEntity<String> createCategory(@RequestBody Category category) {
+	public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
 		return categoryService.createCategory(category);
 	}
 
