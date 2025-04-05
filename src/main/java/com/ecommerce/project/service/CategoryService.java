@@ -12,7 +12,7 @@ public interface CategoryService {
 
 	ResponseEntity<String> createCategory(Category category);
 
-	ResponseEntity<String> deleteCategoryById(long categoryId);
+	ResponseEntity<String> deleteCategory(long categoryId);
 
 	ResponseEntity<?> updateCategory(Category category, long id);
 }

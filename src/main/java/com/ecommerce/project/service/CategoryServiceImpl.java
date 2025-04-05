@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.project.model.Category;
+import com.ecommerce.project.model.exceptions.APIException;
+import com.ecommerce.project.model.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.repositories.CategoryRepository;
 
 @Service
@@ -21,30 +23,39 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public ResponseEntity<List<Category>> getAllCategories() {
-		return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
+		List<Category> extractedCategory = categoryRepository.findAll();
+		if (extractedCategory.isEmpty())
+			throw new APIException("No Category is Present");
+		return new ResponseEntity<>(extractedCategory, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<String> createCategory(Category category) {
-		categoryRepository.save(category);
-		return new ResponseEntity<>("Category created successfully", HttpStatus.CREATED);
+		Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+		if (savedCategory != null)
+			throw new APIException("Category already Present");
+		else
+		{
+			categoryRepository.save(category);
+			return new ResponseEntity<>("Category created SuccessFully", HttpStatus.CREATED);
+		}
 
 	}
 
 	@Override
-	public ResponseEntity<String> deleteCategoryById(long categoryId) {
+	public ResponseEntity<String> deleteCategory(long categoryId) {
 		Optional<Category> category = categoryRepository.findById(categoryId);
 		if (category.isEmpty())
-			return new ResponseEntity<>("Category not found with id:" + categoryId, HttpStatus.NOT_FOUND);
+			throw new ResourceNotFoundException("category", "categoryId", categoryId);
 		categoryRepository.deleteById(categoryId);
 		return new ResponseEntity<>("Category deleted SuccessFully", HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<?> updateCategory(Category category, long id) {
-		Optional<Category> extractedCategory = categoryRepository.findById(id);
+	public ResponseEntity<?> updateCategory(Category category, long categoryId) {
+		Optional<Category> extractedCategory = categoryRepository.findById(categoryId);
 		if (extractedCategory.isEmpty())
-			return new ResponseEntity<>("Category not found with id:" + id, HttpStatus.NOT_FOUND);
+			throw new ResourceNotFoundException("category", "categoryId", categoryId);
 		else {
 			Category getCategory = extractedCategory.get();
 			getCategory.setCategoryName(category.getCategoryName());
