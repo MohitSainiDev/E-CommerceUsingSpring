@@ -1,18 +1,17 @@
 package com.ecommerce.project.service;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
-import com.ecommerce.project.model.Category;
+import com.ecommerce.project.payload.CategoryDTO;
+import com.ecommerce.project.payload.CategoryResponse;
 
 public interface CategoryService {
 
-	ResponseEntity<List<Category>> getAllCategories();
+	ResponseEntity<CategoryResponse> getAllCategories(int pageNumber, int pageSize, String sortBy, String sortOrder);
 
-	ResponseEntity<String> createCategory(Category category);
+	ResponseEntity<CategoryDTO> createCategory(CategoryDTO categoryDTO);
 
-	ResponseEntity<String> deleteCategory(long categoryId);
+	ResponseEntity<CategoryDTO> deleteCategory(long categoryId);
 
-	ResponseEntity<?> updateCategory(Category category, long id);
+	ResponseEntity<CategoryDTO> updateCategory(CategoryDTO categoryDTO, long id);
 }
