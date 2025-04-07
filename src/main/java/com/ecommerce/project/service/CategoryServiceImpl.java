@@ -31,8 +31,6 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	ModelMapper modelMapper;
 
-	@Autowired
-	CategoryResponse categoryResponse;
 
 	@Override
 	public ResponseEntity<CategoryResponse> getAllCategories(int pageNumber, int pageSize, String sortBy,
@@ -48,6 +46,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 		List<CategoryDTO> categoryDTOs = extractedCategory.stream()
 				.map(category -> modelMapper.map(category, CategoryDTO.class)).toList();
+
+		CategoryResponse categoryResponse = new CategoryResponse();
+
 		categoryResponse.setContent(categoryDTOs);
 		categoryResponse.setPageNumber(categoryPage.getNumber());
 		categoryResponse.setPageSize(categoryPage.getSize());
