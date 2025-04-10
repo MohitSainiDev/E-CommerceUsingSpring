@@ -43,4 +43,9 @@ public class MyGlobalExceptionHandler {
 		return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
 
 	}
+
+//	@ExceptionHandler(ConstraintViolationException.class)
+//	public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException ex) {
+//		return ResponseEntity.badRequest().body("Validation failed: " + ex.getMessage());
+//	}
 }
