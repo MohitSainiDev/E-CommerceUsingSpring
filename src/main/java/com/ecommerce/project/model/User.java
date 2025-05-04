@@ -22,7 +22,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -69,9 +71,13 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
 	private Set<Product> products;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
-	List<Address> addresses = new ArrayList<>();
+	@Getter
+	@Setter
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+//    @JoinTable(name = "user_address",
+//                joinColumns = @JoinColumn(name = "user_id"),
+//                inverseJoinColumns = @JoinColumn(name = "address_id"))
+	private List<Address> addresses = new ArrayList<>();
 	
 
 }
